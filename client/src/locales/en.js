@@ -6,6 +6,7 @@ export default {
     orders: 'Orders',
     finance: 'Finance',
     demandForecast: 'Demand Forecast',
+    restocking: 'Restocking',
     companyName: 'Catalyst Components',
     subtitle: 'Inventory Management System'
   },
@@ -106,12 +107,18 @@ export default {
     title: 'Orders',
     description: 'View and manage customer orders',
     allOrders: 'All Orders',
+    submittedOrders: 'Submitted Orders',
     totalOrders: 'Total Orders',
     totalRevenue: 'Total Revenue',
     avgOrderValue: 'Avg Order Value',
     onTimeDelivery: 'On-Time Delivery',
     itemsCount: '{count} items',
     quantity: 'Qty',
+    deliveryLeadTime: 'Delivery Lead Time',
+    noSubmitted: 'No restocking orders submitted yet.',
+    submittedDate: 'Submitted',
+    totalCost: 'Total Cost',
+    leadTimeDays: '{count} days',
     table: {
       orderNumber: 'Order Number',
       orderId: 'Order ID',
@@ -185,6 +192,42 @@ export default {
       change: 'Change',
       trend: 'Trend',
       period: 'Period'
+    }
+  },
+
+  // Restocking
+  restocking: {
+    title: 'Restocking',
+    description: 'Recommend inventory to restock based on demand forecasts within your available budget.',
+    loadError: 'Failed to load restocking data',
+    budget: 'Available Budget',
+    budgetUsed: 'Budget Used',
+    budgetRemaining: 'Remaining',
+    leadTime: 'Estimated Delivery Lead Time',
+    days: '{count} days',
+    fundedItems: 'Funded Items ({count})',
+    unfundedItems: 'Not Covered by Budget ({count})',
+    noFunded: 'No items can be funded with the current budget.',
+    noShortfall: 'No items are forecast to fall short of demand.',
+    allFunded: 'All items are covered by the current budget.',
+    placeOrder: 'Place Order',
+    orderTotal: 'Order Total',
+    partial: 'Partial',
+    orderSuccess: 'Order {number} submitted. Expected delivery in {days} days.',
+    viewOrders: 'View in Orders',
+    table: {
+      item: 'Item',
+      warehouse: 'Warehouse',
+      trend: 'Trend',
+      shortfall: 'Shortfall',
+      qty: 'Order Qty',
+      unitCost: 'Unit Cost',
+      lineCost: 'Line Cost'
+    },
+    trends: {
+      increasing: 'Increasing',
+      stable: 'Stable',
+      decreasing: 'Decreasing'
     }
   },
 

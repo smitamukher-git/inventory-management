@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Factory Inventory Management System Architecture</title>
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --panel: #ffffff;
+        --panel-alt: #f1f5f9;
+        --border: #dfe7f1;
+        --text: #0f172a;
+        --muted: #475569;
+        --primary: #0f172a;
+        --secondary: #334155;
+        --accent: #2563eb;
+        --success: #16a34a;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+        color: var(--text);
+      }
+
+      .page {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px 40px;
+      }
+
+      .header {
+        margin-bottom: 24px;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 11px;
+        color: var(--accent);
+        padding: 8px 12px;
+        background: rgba(37, 99, 235, 0.08);
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 999px;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 16px 0 10px;
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.7;
+      }
+
+      .section {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        padding: 24px;
+        margin-top: 28px;
+      }
+
+      h2 {
+        margin: 0 0 18px;
+        font-size: 1.4rem;
+      }
+
+      .diagram {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(140px, 1fr));
+        gap: 18px;
+        align-items: center;
+      }
+
+      .node {
+        background: var(--panel-alt);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px 14px;
+        text-align: center;
+        min-height: 110px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .node strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+      }
+
+      .node span {
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.5;
+      }
+
+      .arrow {
+        text-align: center;
+        font-size: 1.8rem;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        padding: 18px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: var(--panel-alt);
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 1.05rem;
+      }
+
+      .card ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .stack-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .pill {
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        color: var(--secondary);
+        border: 1px solid #cbd5e1;
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: 1.2fr 1.2fr 1.2fr;
+        gap: 18px;
+      }
+
+      .flow-step {
+        background: var(--panel-alt);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px;
+      }
+
+      .flow-step .num {
+        display: inline-flex;
+        width: 26px;
+        height: 26px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--primary);
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .flow-step h3 {
+        margin: 0 0 8px;
+      }
+
+      .flow-step p,
+      .flow-step li {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .codeblock {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-radius: 12px;
+        padding: 16px 18px;
+        overflow-x: auto;
+        font-family: Consolas, "Liberation Mono", monospace;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 900px) {
+        .diagram, .flow { grid-template-columns: 1fr; }
+        .arrow { transform: rotate(90deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="eyebrow">System Architecture</div>
+        <h1>Factory Inventory Management System</h1>
+        <p class="subtitle">
+          A full-stack demo combining a Vue 3 single-page frontend, a FastAPI service layer,
+          and mock JSON datasets to simulate inventory, orders, demand, and spending workflows.
+        </p>
+      </header>
+
+      <section class="section">
+        <h2>High-level architecture</h2>
+        <div class="diagram">
+          <div class="node">
+            <strong>User Browser</strong>
+            <span>Vue views, filters, charts, and modals</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node">
+            <strong>Frontend</strong>
+            <span>Vite + Vue 3 + Router + Axios</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node">
+            <strong>API Layer</strong>
+            <span>FastAPI on port 8001</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node">
+            <strong>Data Source</strong>
+            <span>In-memory JSON files in server/data</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Technology stack</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Frontend</h3>
+            <ul>
+              <li>Vue 3 Composition API</li>
+              <li>Vue Router for page navigation</li>
+              <li>Vite for local development</li>
+              <li>Axios for HTTP calls</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Backend</h3>
+            <ul>
+              <li>Python FastAPI</li>
+              <li>Pydantic validation</li>
+              <li>CORS enabled for frontend access</li>
+              <li>REST-style endpoints</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Data</h3>
+            <ul>
+              <li>JSON files in server/data</li>
+              <li>Loaded through server/mock_data.py</li>
+              <li>No database layer in demo mode</li>
+              <li>Filters applied in memory</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stack-list">
+          <span class="pill">Vue 3</span>
+          <span class="pill">Vite</span>
+          <span class="pill">FastAPI</span>
+          <span class="pill">Pydantic</span>
+          <span class="pill">Axios</span>
+          <span class="pill">JSON</span>
+          <span class="pill">REST API</span>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Data flow</h2>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="num">1</div>
+            <h3>UI filters</h3>
+            <p>
+              The user selects warehouse, category, status, and month filters from the Vue views
+              and shared filter composables.
+            </p>
+          </div>
+
+          <div class="flow-step">
+            <div class="num">2</div>
+            <h3>API client request</h3>
+            <p>
+              The frontend sends query parameters through <strong>client/src/api.js</strong> using
+              Axios to the backend endpoints such as /api/orders and /api/dashboard/summary.
+            </p>
+          </div>
+
+          <div class="flow-step">
+            <div class="num">3</div>
+            <h3>FastAPI processing</h3>
+            <p>
+              The backend applies filter logic, optional month logic, and Pydantic response models,
+              then returns structured JSON for the Vue UI.
+            </p>
+          </div>
+        </div>
+
+        <div class="codeblock" style="margin-top: 18px;">
+Vue filters → client/src/api.js → FastAPI → server/mock_data.py → JSON datasets → filtered response → computed UI metrics
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Core application structure</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Frontend folders</h3>
+            <ul>
+              <li>client/src/views - page-level screens</li>
+              <li>client/src/components - reusable UI parts</li>
+              <li>client/src/composables - shared filter state</li>
+              <li>client/src/api.js - backend communication</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Backend folders</h3>
+            <ul>
+              <li>server/main.py - FastAPI app and endpoints</li>
+              <li>server/mock_data.py - JSON loader</li>
+              <li>server/data - inventory, orders, demand, and spending files</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Main API areas</h3>
+            <ul>
+              <li>/api/inventory</li>
+              <li>/api/orders</li>
+              <li>/api/dashboard/summary</li>
+              <li>/api/spending/*</li>
+              <li>/api/demand and /api/backlog</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

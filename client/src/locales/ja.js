@@ -6,6 +6,7 @@ export default {
     orders: '注文',
     finance: '財務',
     demandForecast: '需要予測',
+    restocking: '再仕入れ',
     companyName: '触媒コンポーネンツ',
     subtitle: '在庫管理システム'
   },
@@ -106,12 +107,18 @@ export default {
     title: '注文',
     description: '顧客注文の表示と管理',
     allOrders: 'すべての注文',
+    submittedOrders: '提出済み注文',
     totalOrders: '総注文数',
     totalRevenue: '総収益',
     avgOrderValue: '平均注文額',
     onTimeDelivery: '定時配達',
     itemsCount: '{count}件',
     quantity: '数量',
+    deliveryLeadTime: '配送リードタイム',
+    noSubmitted: '提出済みの再仕入れ注文はありません。',
+    submittedDate: '提出日',
+    totalCost: '合計コスト',
+    leadTimeDays: '{count}日',
     table: {
       orderNumber: '注文番号',
       orderId: '注文ID',
@@ -185,6 +192,42 @@ export default {
       change: '変化',
       trend: 'トレンド',
       period: '期間'
+    }
+  },
+
+  // Restocking
+  restocking: {
+    title: '再仕入れ',
+    description: '需要予測に基づき、利用可能な予算内で再仕入れ候補を提案します。',
+    loadError: '再仕入れデータの読み込みに失敗しました',
+    budget: '利用可能な予算',
+    budgetUsed: '使用予算',
+    budgetRemaining: '残額',
+    leadTime: '配送リードタイム（見積）',
+    days: '{count}日',
+    fundedItems: '予算内の品目（{count}件）',
+    unfundedItems: '予算対象外（{count}件）',
+    noFunded: '現在の予算で発注できる品目がありません。',
+    noShortfall: '需要に対して不足する品目はありません。',
+    allFunded: 'すべての品目が現在の予算でカバーされています。',
+    placeOrder: '注文を確定',
+    orderTotal: '注文合計',
+    partial: '一部',
+    orderSuccess: '注文 {number} を送信しました。{days}日後に配達予定です。',
+    viewOrders: '注文を表示',
+    table: {
+      item: '品目',
+      warehouse: '倉庫',
+      trend: 'トレンド',
+      shortfall: '不足数',
+      qty: '発注数量',
+      unitCost: '単価',
+      lineCost: '小計'
+    },
+    trends: {
+      increasing: '増加',
+      stable: '安定',
+      decreasing: '減少'
     }
   },
 
